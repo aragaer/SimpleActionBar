@@ -1,7 +1,5 @@
 package com.aragaer.simpleactionbar;
 
-import java.security.InvalidParameterException;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -42,15 +40,12 @@ public class ActionBar extends ViewGroup {
 	public ActionBar(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 
-		if (!(context instanceof AbActivity))
-			throw new InvalidParameterException("Must be AbActivity");
 		menu = new ActionsMenu(context);
 		home_item = menu.add(-1, R.id.home, 0, R.string.home);
 
 		PackageManager pm = context.getPackageManager();
 
-		home = (ViewGroup) LayoutInflater.from(context).inflate(R.layout.home,
-				null);
+		home = (ViewGroup) LayoutInflater.from(context).inflate(R.layout.home, null);
 		up = home.findViewById(R.id.up);
 		icon = (ImageView) home.findViewById(R.id.home);
 		home.setOnClickListener(item_click);
@@ -59,8 +54,7 @@ public class ActionBar extends ViewGroup {
 		home.setTag(home_item);
 
 		try {
-			Drawable icon_d = pm.getActivityIcon(((Activity) context)
-					.getComponentName());
+			Drawable icon_d = pm.getActivityIcon(((Activity) context).getComponentName());
 			icon.setImageDrawable(icon_d);
 		} catch (NameNotFoundException e) {
 			Log.e("AB", "Activity component name not found!", e);
@@ -85,8 +79,7 @@ public class ActionBar extends ViewGroup {
 		setBackgroundResource(R.drawable.ab_transparent_dark_holo);
 	}
 
-	public void setDisplayShowHomeEnabled(boolean showHome) {
-	}
+	public void setDisplayShowHomeEnabled(boolean showHome) { }
 
 	public void setDisplayHomeAsUpEnabled(boolean isUp) {
 		up.setVisibility(isUp ? VISIBLE : GONE);
@@ -110,21 +103,15 @@ public class ActionBar extends ViewGroup {
 		final int height = maxHeight - verticalPadding;
 		int availableWidth = contentWidth - paddingLeft - paddingRight;
 
-		final int exactHeightSpec = MeasureSpec.makeMeasureSpec(height,
-				MeasureSpec.EXACTLY);
-		int homeWidthSpec = MeasureSpec.makeMeasureSpec(availableWidth,
-				MeasureSpec.AT_MOST);
+		final int exactHeightSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
 
-		home.measure(homeWidthSpec, exactHeightSpec);
-		final int homeWidth = home.getMeasuredWidth();
-		availableWidth = Math.max(0, availableWidth - homeWidth);
+		home.measure(MeasureSpec.makeMeasureSpec(availableWidth, MeasureSpec.AT_MOST), exactHeightSpec);
+		availableWidth = Math.max(0, availableWidth - home.getMeasuredWidth());
 
-		title.measure(MeasureSpec.makeMeasureSpec(availableWidth,
-				MeasureSpec.AT_MOST), exactHeightSpec);
+		title.measure(MeasureSpec.makeMeasureSpec(availableWidth, MeasureSpec.AT_MOST), exactHeightSpec);
 		availableWidth = Math.max(0, availableWidth - title.getMeasuredWidth());
 
-		actions.measure(MeasureSpec.makeMeasureSpec(availableWidth,
-				MeasureSpec.AT_MOST), exactHeightSpec);
+		actions.measure(MeasureSpec.makeMeasureSpec(availableWidth, MeasureSpec.AT_MOST), exactHeightSpec);
 		availableWidth = Math.max(0, availableWidth - actions.getMeasuredWidth());
 
 		setMeasuredDimension(contentWidth, maxHeight);
@@ -132,11 +119,9 @@ public class ActionBar extends ViewGroup {
 
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		int x = getPaddingLeft(), y = getPaddingTop();
-		home.layout(x, y, x + home.getMeasuredWidth(),
-				y + home.getMeasuredHeight());
+		home.layout(x, y, x + home.getMeasuredWidth(), y + home.getMeasuredHeight());
 		x += home.getMeasuredWidth();
-		title.layout(x, y, x + title.getMeasuredWidth(),
-				y + title.getMeasuredHeight());
+		title.layout(x, y, x + title.getMeasuredWidth(), y + title.getMeasuredHeight());
 		actions.layout(r - actions.getMeasuredWidth(), y, r, y + actions.getMeasuredHeight());
 	}
 
@@ -147,25 +132,50 @@ public class ActionBar extends ViewGroup {
 		}
 	};
 
-	private static final int MAX_ICON_SIZE = 32; // dp
-
 	void setActions(SparseArray<MenuItem> items) {
 		final Context ctx = getContext();
-		final int icon_size = Math.round(MAX_ICON_SIZE * ctx.getResources().getDisplayMetrics().density);
 		for (int i = 0; i < items.size(); i++) {
 			final MenuItem item = items.valueAt(i);
 			if (item.getGroupId() < 0)
 				continue;
-			Log.d("AB", "Action "+i+" ["+item.getTitle()+"]");
-			TextView view = new TextView(ctx);
-			view.setTag(item);
-			view.setBackgroundResource(R.drawable.item_background_holo_dark);
-			item.getIcon().setBounds(0, 0, icon_size, icon_size);
-			view.setCompoundDrawables(item.getIcon(), null, null, null);
+			ActionView view = new ActionView(ctx);
+			view.setAction(item);
 			view.setOnClickListener(item_click);
-			view.setClickable(true);
-			view.setFocusable(true);
-			actions.addView(view, icon_size, icon_size);
+			actions.addView(view);
+		}
+	}
+
+	private final class ActionView extends TextView {
+		private static final int MAX_ICON_SIZE = 32; // dp
+		private Drawable icon;
+		final int icon_size;
+
+		public ActionView(Context context) {
+			super(context);
+			setBackgroundResource(R.drawable.item_background_holo_dark);
+			setClickable(true);
+			setFocusable(true);
+			icon_size = (int) (MAX_ICON_SIZE
+					* context.getResources().getDisplayMetrics().density + 0.5f);
+		}
+
+		void setAction(MenuItem action) {
+			setTag(action);
+			icon = action.getIcon();
+			icon.setBounds(0, 0, icon_size, icon_size);
+			setCompoundDrawables(icon, null, null, null);
+		}
+
+		protected void onMeasure(int wms, int hms) {
+			if (MeasureSpec.getMode(hms) == MeasureSpec.AT_MOST) {
+				// Fill all available height.
+				hms = MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(hms),
+						MeasureSpec.EXACTLY);
+			}
+			super.onMeasure(hms, hms); // we want it square
+			final int w = getMeasuredWidth();
+			final int dw = icon.getBounds().width();
+			setPadding((w - dw) / 2, getPaddingTop(), getPaddingRight(), getPaddingBottom());
 		}
 	}
 }

@@ -2,7 +2,6 @@ package com.aragaer.simpleactionbar;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ public class AbActivity extends Activity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.d("AB", "ActionBar activity onCreate");
 		ll = new LinearLayout(this);
 		ll.setOrientation(LinearLayout.VERTICAL);
 		ab = new ActionBar(this);
@@ -42,10 +40,6 @@ public class AbActivity extends Activity {
 	public void setContentView(View view, ViewGroup.LayoutParams params) {
 		ll.addView(view, params);
 		super.setContentView(ll);
-	}
-
-	public boolean onCreateOptionsMenu(Menu menu) {
-		return false;
 	}
 
 	public boolean onCreateActionBarMenu(Menu menu) {

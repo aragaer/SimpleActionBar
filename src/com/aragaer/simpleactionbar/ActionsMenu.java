@@ -4,7 +4,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -18,13 +17,11 @@ public class ActionsMenu implements Menu {
 
 	private class ActionItem implements MenuItem {
 		private Drawable icon;
-		private char alpha_shortcut, num_shortcut;
-		private Intent intent;
 		private int id, gid;
 		private CharSequence title;
 
 		public char getAlphabeticShortcut() {
-			return alpha_shortcut;
+			return 0;
 		}
 
 		public int getGroupId() {
@@ -36,11 +33,10 @@ public class ActionsMenu implements Menu {
 		}
 
 		public Intent getIntent() {
-			return intent;
+			return null;
 		}
 
 		public int getItemId() {
-			Log.d("AB", "Return id "+id);
 			return id;
 		}
 
@@ -49,7 +45,7 @@ public class ActionsMenu implements Menu {
 		}
 
 		public char getNumericShortcut() {
-			return num_shortcut;
+			return 0;
 		}
 
 		public int getOrder() {
@@ -89,7 +85,6 @@ public class ActionsMenu implements Menu {
 		}
 
 		public MenuItem setAlphabeticShortcut(char alphaChar) {
-			alpha_shortcut = alphaChar;
 			return this;
 		}
 
@@ -115,12 +110,10 @@ public class ActionsMenu implements Menu {
 		}
 
 		public MenuItem setIntent(Intent intent) {
-			this.intent = intent;
 			return null;
 		}
 
 		public MenuItem setNumericShortcut(char numericChar) {
-			num_shortcut = numericChar;
 			return null;
 		}
 
@@ -130,8 +123,6 @@ public class ActionsMenu implements Menu {
 		}
 
 		public MenuItem setShortcut(char numericChar, char alphaChar) {
-			alpha_shortcut = alphaChar;
-			num_shortcut = numericChar;
 			return null;
 		}
 
@@ -177,7 +168,6 @@ public class ActionsMenu implements Menu {
 	public MenuItem add(int groupId, int itemId, int order, CharSequence title) {
 		ActionItem item = new ActionItem(itemId, groupId, title);
 		items.put(itemId, item);
-		Log.d("AB", "Added item "+itemId+" ["+title+"]");
 		return item;
 	}
 
