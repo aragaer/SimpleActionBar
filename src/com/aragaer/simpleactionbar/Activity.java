@@ -1,6 +1,5 @@
 package com.aragaer.simpleactionbar;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -8,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
-public class AbActivity extends Activity {
+public class Activity extends android.app.Activity {
 	private ActionBar ab;
 	private LinearLayout ll;
 	public ActionBar getActionBar() {
