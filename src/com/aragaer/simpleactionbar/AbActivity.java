@@ -3,6 +3,7 @@ package com.aragaer.simpleactionbar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -25,6 +26,8 @@ public class AbActivity extends Activity {
 		LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT,
 				getResources().getDimensionPixelSize(R.dimen.action_bar_default_height));
 		ll.addView(ab, lp);
+		if (onCreateActionBarMenu(ab.menu))
+			ab.setActions(ab.menu.items);
 	}
 
 	public void setContentView(int layoutResID) {
@@ -36,8 +39,16 @@ public class AbActivity extends Activity {
 		super.setContentView(ll);
 	}
 
-	public void setContentView (View view, ViewGroup.LayoutParams params) {
+	public void setContentView(View view, ViewGroup.LayoutParams params) {
 		ll.addView(view, params);
 		super.setContentView(ll);
+	}
+
+	public boolean onCreateOptionsMenu(Menu menu) {
+		return false;
+	}
+
+	public boolean onCreateActionBarMenu(Menu menu) {
+		return false;
 	}
 }
