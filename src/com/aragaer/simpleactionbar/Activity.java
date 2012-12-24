@@ -32,8 +32,8 @@ public class Activity extends android.app.Activity {
 	}
 
 	public void setContentView(View view) {
-		ll.addView(view);
-		super.setContentView(ll);
+		LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1);
+		setContentView(view, lp);
 	}
 
 	public void setContentView(View view, ViewGroup.LayoutParams params) {
