@@ -19,6 +19,7 @@ public class ActionsMenu implements Menu {
 		private Drawable icon;
 		private int id, gid;
 		private CharSequence title;
+		private Intent intent;
 
 		public char getAlphabeticShortcut() {
 			return 0;
@@ -33,7 +34,7 @@ public class ActionsMenu implements Menu {
 		}
 
 		public Intent getIntent() {
-			return null;
+			return intent;
 		}
 
 		public int getItemId() {
@@ -106,11 +107,12 @@ public class ActionsMenu implements Menu {
 		}
 		public MenuItem setIcon(int iconRes) {
 			this.icon = ctx.getResources().getDrawable(iconRes);
-			return null;
+			return this;
 		}
 
 		public MenuItem setIntent(Intent intent) {
-			return null;
+			this.intent = intent;
+			return this;
 		}
 
 		public MenuItem setNumericShortcut(char numericChar) {
@@ -154,6 +156,15 @@ public class ActionsMenu implements Menu {
 			this.id = id;
 			this.gid = gid;
 			setTitle(title);
+		}
+
+		boolean invoke(Context ctx) {
+			if (intent != null) {
+				ctx.startActivity(intent);
+				return true;
+			}
+
+			return false;
 		}
 	}
 
@@ -209,7 +220,7 @@ public class ActionsMenu implements Menu {
 	}
 
 	public MenuItem getItem(int index) {
-		return items.get(index);
+		return items.valueAt(index);
 	}
 
 	public boolean hasVisibleItems() {
@@ -221,7 +232,8 @@ public class ActionsMenu implements Menu {
 	}
 
 	public boolean performIdentifierAction(int id, int flags) {
-		return false;
+		ActionItem item = (ActionItem) findItem(id);
+		return item != null && item.invoke(ctx);
 	}
 
 	public boolean performShortcut(int keyCode, KeyEvent event, int flags) {

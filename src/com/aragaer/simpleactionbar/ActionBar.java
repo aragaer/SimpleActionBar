@@ -128,7 +128,9 @@ public class ActionBar extends ViewGroup {
 	private final OnClickListener item_click = new OnClickListener() {
 		public void onClick(View v) {
 			MenuItem item = (MenuItem) v.getTag();
-			((Activity) getContext()).onOptionsItemSelected(item);
+			if (((Activity) getContext()).onOptionsItemSelected(item))
+				return;
+			menu.performIdentifierAction(item.getItemId(), 0);
 		}
 	};
 
