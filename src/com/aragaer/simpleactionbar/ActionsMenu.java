@@ -1,5 +1,7 @@
 package com.aragaer.simpleactionbar;
 
+import java.util.ArrayList;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +15,8 @@ import android.view.SubMenu;
 
 public class ActionsMenu implements Menu {
 	private Context ctx;
-	SparseArray<MenuItem> items = new SparseArray<MenuItem>();
+	private SparseArray<MenuItem> by_id = new SparseArray<MenuItem>(); // fast search
+	ArrayList<MenuItem> items = new ArrayList<MenuItem>(); // correct order
 
 	private class ActionItem implements MenuItem {
 		private Drawable icon;
@@ -178,7 +181,8 @@ public class ActionsMenu implements Menu {
 
 	public MenuItem add(int groupId, int itemId, int order, CharSequence title) {
 		ActionItem item = new ActionItem(itemId, groupId, title);
-		items.put(itemId, item);
+		by_id.put(itemId, item);
+		items.add(item);
 		return item;
 	}
 
@@ -210,17 +214,18 @@ public class ActionsMenu implements Menu {
 	}
 
 	public void clear() {
+		by_id.clear();
 		items.clear();
 	}
 
 	public void close() { }
 
 	public MenuItem findItem(int id) {
-		return items.get(id);
+		return by_id.get(id);
 	}
 
 	public MenuItem getItem(int index) {
-		return items.valueAt(index);
+		return items.get(index);
 	}
 
 	public boolean hasVisibleItems() {

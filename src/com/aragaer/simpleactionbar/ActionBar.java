@@ -1,5 +1,7 @@
 package com.aragaer.simpleactionbar;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -9,7 +11,6 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -134,10 +135,9 @@ public class ActionBar extends ViewGroup {
 		}
 	};
 
-	void setActions(SparseArray<MenuItem> items) {
+	void setActions(List<MenuItem> items) {
 		final Context ctx = getContext();
-		for (int i = 0; i < items.size(); i++) {
-			final MenuItem item = items.valueAt(i);
+		for (MenuItem item : items) {
 			if (item.getGroupId() < 0)
 				continue;
 			ActionView view = new ActionView(ctx);
