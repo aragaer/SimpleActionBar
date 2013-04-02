@@ -25,7 +25,7 @@ public class Activity extends android.app.Activity {
 		LayoutParams lp = new LayoutParams(LayoutParams.FILL_PARENT,
 				getResources().getDimensionPixelSize(R.dimen.action_bar_default_height));
 		ll.addView(ab, lp);
-		if (onCreateActionBarMenu(ab.menu))
+		if (onCreateOptionsMenu(ab.menu))
 			ab.setActions(ab.menu.items);
 	}
 
@@ -43,7 +43,7 @@ public class Activity extends android.app.Activity {
 		super.setContentView(ll);
 	}
 
-	public boolean onCreateActionBarMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(Menu menu) {
 		return false;
 	}
 }
