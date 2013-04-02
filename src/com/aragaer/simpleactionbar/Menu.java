@@ -18,7 +18,7 @@ public class Menu implements android.view.Menu {
 
 	private class ActionItem implements MenuItem {
 		private Drawable icon;
-		private int id, gid;
+		private int id, gid, show_as_action;
 		private CharSequence title;
 		private Intent intent;
 
@@ -166,6 +166,10 @@ public class Menu implements android.view.Menu {
 			}
 
 			return false;
+		}
+
+		public void setShowAsAction(int actionEnum) {
+			show_as_action = actionEnum;
 		}
 	}
 
