@@ -1,5 +1,6 @@
 package com.aragaer.simpleactionbar;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
+@SuppressLint("Override")
 public class Activity extends android.app.Activity {
 	private ActionBar ab;
 	private LinearLayout ll;
@@ -20,7 +22,7 @@ public class Activity extends android.app.Activity {
 		ll.setOrientation(LinearLayout.VERTICAL);
 		ab = new ActionBar(this);
 
-		LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT,
+		LayoutParams lp = new LayoutParams(LayoutParams.FILL_PARENT,
 				getResources().getDimensionPixelSize(R.dimen.action_bar_default_height));
 		ll.addView(ab, lp);
 		if (onCreateActionBarMenu(ab.menu))
@@ -32,7 +34,7 @@ public class Activity extends android.app.Activity {
 	}
 
 	public void setContentView(View view) {
-		LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1);
+		LayoutParams lp = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1);
 		setContentView(view, lp);
 	}
 
