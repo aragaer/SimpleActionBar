@@ -9,11 +9,9 @@ import android.graphics.drawable.Drawable;
 import android.util.SparseArray;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.SubMenu;
 
-public class ActionsMenu implements Menu {
+public class Menu implements android.view.Menu {
 	private Context ctx;
 	private SparseArray<MenuItem> by_id = new SparseArray<MenuItem>(); // fast search
 	ArrayList<MenuItem> items = new ArrayList<MenuItem>(); // correct order
@@ -192,7 +190,7 @@ public class ActionsMenu implements Menu {
 
 	public int addIntentOptions(int groupId, int itemId, int order,
 			ComponentName caller, Intent[] specifics, Intent intent, int flags,
-			MenuItem[] outSpecificItems) {
+			android.view.MenuItem[] outSpecificItems) {
 		return 0;
 	}
 
@@ -262,7 +260,7 @@ public class ActionsMenu implements Menu {
 		return items.size();
 	}
 
-	public ActionsMenu(Context context) {
+	public Menu(Context context) {
 		ctx = context;
 	}
 }

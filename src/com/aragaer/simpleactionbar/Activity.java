@@ -2,7 +2,6 @@ package com.aragaer.simpleactionbar;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -41,6 +40,10 @@ public class Activity extends android.app.Activity {
 	public void setContentView(View view, ViewGroup.LayoutParams params) {
 		ll.addView(view, params);
 		super.setContentView(ll);
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		return false;
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
